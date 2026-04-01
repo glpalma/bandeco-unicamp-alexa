@@ -1,0 +1,118 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "slots": [
+            {
+              "name": "meal",
+              "type": "MEAL_TYPE"
+            },
+            {
+              "name": "diet",
+              "type": "DIET_TYPE"
+            }
+          ],
+          "name": "CardapioIntent",
+          "samples": [
+            "o que tem no bandeco",
+            "qual o cardápio de hoje",
+            "o que tem hoje",
+            "me fala o cardápio",
+            "qual é o cardápio",
+            "o que tem pra comer",
+            "qual é o {meal}",
+            "o que tem no {meal}",
+            "o que tem de {meal}",
+            "me fala o {meal}",
+            "qual o {meal} de hoje",
+            "o {meal} de hoje",
+            "o que tem de {diet}",
+            "cardápio {diet}",
+            "opção {diet}",
+            "o que tem {diet} hoje",
+            "qual é o {meal} {diet}",
+            "o que tem no {meal} {diet}",
+            "o {meal} {diet}",
+            "me fala o {meal} {diet}",
+            "qual o {meal} {diet} de hoje"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "almoco",
+                  "almoçar",
+                  "almoço de hoje"
+                ],
+                "value": "almoço"
+              },
+              "id": "almoco"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "janta",
+                  "jantar de hoje",
+                  "janta de hoje"
+                ],
+                "value": "jantar"
+              },
+              "id": "jantar"
+            }
+          ],
+          "name": "MEAL_TYPE"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "normal",
+                  "comum",
+                  "tradicional"
+                ],
+                "value": "regular"
+              },
+              "id": "regular"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "vegana",
+                  "vegetariano",
+                  "vegetariana",
+                  "vegan"
+                ],
+                "value": "vegano"
+              },
+              "id": "vegano"
+            }
+          ],
+          "name": "DIET_TYPE"
+        }
+      ],
+      "invocationName": "bandeco unicamp"
+    }
+  }
+}

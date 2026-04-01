@@ -1,0 +1,4 @@
+ask-sdk-core
+requests
+pytz
+urllib3<2.0.0
