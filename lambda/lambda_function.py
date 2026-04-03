@@ -31,6 +31,7 @@ def get_default_meal() -> str:
 
 
 def fetch_menu(date: str) -> dict:
+    # TODO: Add verification of date format to avoid errors
     try:
         response = requests.get(API_BASE_URL + date, timeout=5)
         response.raise_for_status()
@@ -54,10 +55,24 @@ def resolve_slot_id(handler_input: HandlerInput, slot_name: str) -> Optional[str
     return None
 
 
-def build_meal_speech(menu: dict, meal_key: str, diet_key: str, meal_label: str, diet_label: str) -> Optional[str]:
+def get_slot_value(handler_input: HandlerInput, slot_name: str) -> Optional[str]:
+    """Return the raw slot value or None. Use for built-in types like AMAZON.DATE."""
+    intent = handler_input.request_envelope.request.intent
+    slot = intent.slots.get(slot_name)
+    if not slot or not slot.value:
+        return None
+    return slot.value
+
+
+def build_meal_speech(menu: dict, meal_key: str, diet_key: str, meal_label: str, diet_label: str, date_label: str) -> Optional[str]:
+    # TODO: insert day of week to the speech
+    # TODO: use past verbs when the date is in the past or if the meal is in the past
+    if menu.get(meal_key, {}) is None:
+        return f"Não há cardápio cadastrado para {meal_label} {date_label}."
+    
     meal_data = menu.get(meal_key, {}).get(diet_key)
-    if not meal_data:
-        return f"Não encontrei o cardápio {diet_label} para {meal_label} hoje."
+    if meal_data is None:
+        return f"Não encontrei o cardápio {diet_label} para {meal_label} {date_label}."
 
     prato = meal_data.get("prato_principal", "").capitalize()
     guarnicao = meal_data.get("guarnicao", "").capitalize()
@@ -65,7 +80,7 @@ def build_meal_speech(menu: dict, meal_key: str, diet_key: str, meal_label: str,
     sobremesa = meal_data.get("sobremesa", "").lower()
     suco = meal_data.get("suco", "").lower()
 
-    parts = [f"O {meal_label} {diet_label} de hoje é:"]
+    parts = [f"O {meal_label} {diet_label} {date_label} é:"]
     parts.append(f"{prato}.")
     parts.append(f"{guarnicao} de guarnição.")
     parts.append(f"{salada}, suco de {suco} e {sobremesa} de sobremesa.")
@@ -110,9 +125,9 @@ class CardapioIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput) -> Response:
         meal_id = resolve_slot_id(handler_input, "meal") or get_default_meal()
         diet_id = resolve_slot_id(handler_input, "diet") or "regular"
+        date = get_slot_value(handler_input, "date") or get_today_date()
 
-        today = get_today_date()
-        menu = fetch_menu(today)
+        menu = fetch_menu(date)
 
         if menu is None:
             speech = (
@@ -122,7 +137,9 @@ class CardapioIntentHandler(AbstractRequestHandler):
         else:
             meal_label = MEAL_LABELS.get(meal_id, meal_id)
             diet_label = DIET_LABELS.get(diet_id, diet_id)
-            speech = build_meal_speech(menu, meal_id, diet_id, meal_label, diet_label)
+            today = get_today_date()
+            date_label = "de hoje" if date == today else f"do dia {date}"
+            speech = build_meal_speech(menu, meal_id, diet_id, meal_label, diet_label, date_label)
 
         return (
             handler_input.response_builder

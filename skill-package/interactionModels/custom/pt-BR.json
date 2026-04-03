@@ -11,31 +11,36 @@
             {
               "name": "diet",
               "type": "DIET_TYPE"
+            },
+            {
+              "name": "date",
+              "type": "AMAZON.DATE"
             }
           ],
           "name": "CardapioIntent",
           "samples": [
             "o que tem no bandeco",
-            "qual o cardápio de hoje",
+            "qual o cardápio de {date}",
             "o que tem hoje",
+            "o que tem {date}",
             "me fala o cardápio",
             "qual é o cardápio",
             "o que tem pra comer",
             "qual é o {meal}",
-            "o que tem no {meal}",
+            "o que tem no {meal} de {date}",
             "o que tem de {meal}",
-            "me fala o {meal}",
-            "qual o {meal} de hoje",
-            "o {meal} de hoje",
+            "me fala o {meal} de {date}",
+            "qual o {meal} de {date}",
+            "o {meal} de {date}",
             "o que tem de {diet}",
             "cardápio {diet}",
             "opção {diet}",
-            "o que tem {diet} hoje",
+            "o que tem {diet} {date}",
             "qual é o {meal} {diet}",
             "o que tem no {meal} {diet}",
             "o {meal} {diet}",
             "me fala o {meal} {diet}",
-            "qual o {meal} {diet} de hoje"
+            "qual o {meal} {diet} de {date}"
           ]
         },
         {
